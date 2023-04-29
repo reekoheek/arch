@@ -1,6 +1,6 @@
 {
   "name": "archet",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Archetype task runner",
   "main": "dist/index.js",
   "bin": {
@@ -11,11 +11,12 @@
   ],
   "scripts": {
     "start": "node ./dist",
-    "dev": "nodemon -x \"esr --cache\" -w src -e ts ./src/index.ts",
-    "dev:one": "esr --cache ./src/index.ts",
+    "dev": "esr --cache ./src/index.ts",
+    "dev:watch": "nodemon -x \"esr --cache\" -w src -e ts ./src/index.ts",
     "lint": "eslint .",
     "build": "rm -rf dist; tsc",
     "build:check": "tsc --noEmit",
+    "check": "npm run lint && npm run build:check",
     "test": "mocha --extension ts -r esr-register.js ./src/**/*.test.ts",
     "test:watch": "npm test -- -w",
     "test:cover": "nyc --reporter=html npm test",
@@ -38,7 +39,6 @@
     "typescript": "^5.0.4"
   },
   "dependencies": {
-    "commander": "^10.0.1",
     "decompress": "^4.2.1",
     "fs-extra": "^11.1.1",
     "tmp": "^0.2.1"
