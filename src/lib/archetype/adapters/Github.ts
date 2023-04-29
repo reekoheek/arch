@@ -6,7 +6,7 @@ import { Readable } from 'stream';
 import { pipeline } from 'stream/promises';
 import { ReadableStream } from 'stream/web';
 import decompress from 'decompress';
-import { ArchError } from '../../../ArchError';
+import { ArchetError } from '../../../ArchetError';
 
 const BASE_URL = 'https://github.com';
 const RE_MATCH_URL = /^https:\/\/github.com\/[^\\/]+\/[^\\/]+$/;
@@ -60,7 +60,7 @@ export class Github implements Archetype {
 async function download(src: string, dest: string) {
   const resp = await fetch(src, { redirect: 'follow' });
   if (resp.status !== 200) {
-    throw new ArchError('download error: ' + resp.status);
+    throw new ArchetError('download error: ' + resp.status);
   }
 
   await pipeline(Readable.fromWeb(resp.body as ReadableStream), fs.createWriteStream(dest));

@@ -3,13 +3,13 @@ import path from 'path';
 import { Initialize } from './runners/Initialize';
 import { Manager } from './lib/archetype';
 import { ClearCache } from './runners/ClearCache';
-import { ArchError } from './ArchError';
+import { ArchetError } from './ArchetError';
 
 const manager = new Manager();
 
 process.on('uncaughtException', (err) => {
-  if (err instanceof ArchError) {
-    console.error('[arch]', err.message);
+  if (err instanceof ArchetError) {
+    console.error('[archet]', err.message);
     process.exit(1);
   }
 
@@ -17,7 +17,7 @@ process.on('uncaughtException', (err) => {
   process.exit(1);
 });
 
-program.name('arch')
+program.name('archet')
   .description('Archetype task runner')
   .version('1.0.0');
 

@@ -1,5 +1,5 @@
 import cp from 'child_process';
-import { ArchError } from '../../ArchError';
+import { ArchetError } from '../../ArchetError';
 
 export class Git {
   constructor(private cwd: string) {}
@@ -15,7 +15,7 @@ export class Git {
         if (code === 0) {
           resolve();
         } else {
-          reject(new ArchError('git init failed with code: ' + code));
+          reject(new ArchetError('git init failed with code: ' + code));
         }
       });
     });

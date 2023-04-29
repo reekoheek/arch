@@ -4,7 +4,7 @@ import { Github } from './adapters/Github';
 import path from 'path';
 import os from 'os';
 import fs from 'fs-extra';
-import { ArchError } from '../../ArchError';
+import { ArchetError } from '../../ArchetError';
 
 export class Manager {
   private adapters: Adapter[] = [
@@ -32,7 +32,7 @@ export class Manager {
       return new Adapter(src);
     }
 
-    throw new ArchError(`failed to resolve source: ${src}`);
+    throw new ArchetError(`failed to resolve source: ${src}`);
   }
 
   async fetch(src: string, dest: string): Promise<void> {

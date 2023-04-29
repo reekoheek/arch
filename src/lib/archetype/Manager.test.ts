@@ -5,12 +5,11 @@ import os from 'os';
 import path from 'path';
 import fs from 'fs-extra';
 import { Adapter } from './Adapter';
-import { Archetype } from './Archetype';
 
 describe('Manager', () => {
   describe('constructor', () => {
     it('set user dir', () => {
-      const defaultUserDir = path.join(os.homedir(), '.arch');
+      const defaultUserDir = path.join(os.homedir(), '.archet');
       assert.strictEqual(new Manager().userDir, defaultUserDir);
       assert.strictEqual(new Manager('/foo/bar').userDir, '/foo/bar');
     });
@@ -60,7 +59,7 @@ describe('Manager', () => {
   });
 
   describe('#fetch()', () => {
-    it.skip('fetch from source to destination', async() => {
+    it('fetch from source to destination', async() => {
       const userDir = tmp.dirSync({ unsafeCleanup: true });
       const workDir = tmp.dirSync({ unsafeCleanup: true });
       try {

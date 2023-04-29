@@ -1,7 +1,8 @@
 import fs from 'fs-extra';
 import { Git } from '../lib/git';
 import { Manager } from '../lib/archetype';
-import { ArchError } from '../ArchError';
+import { ArchetError } from '../ArchetError';
+import path from 'path';
 
 const EMPTY_SRC = 'reekoheek/empty-arch';
 
@@ -15,12 +16,19 @@ export class Initialize {
     }
 
     if (!fs.statSync(this.dest).isDirectory()) {
-      throw new ArchError('destination is not a directory');
+      throw new ArchetError('destination is not a directory');
     }
 
     if (fs.readdirSync(this.dest).length > 0) {
-      throw new ArchError('destination is not empty');
+      throw new ArchetError('destination is not empty');
     }
+  }
+
+  showReadme() {
+    const content = fs.readFileSync(path.join(this.dest, 'README.md'));
+    console.info('');
+    console.info('README');
+    console.info(content.toString());
   }
 
   async run(src = EMPTY_SRC) {
@@ -29,5 +37,7 @@ export class Initialize {
     await this.manager.fetch(src, this.dest);
 
     await new Git(this.dest).init();
+
+    this.showReadme();
   }
 }

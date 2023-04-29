@@ -17,7 +17,7 @@ describe('Github', () => {
     });
   });
 
-  describe.skip('#fetchTo()', () => {
+  describe('#fetchTo()', () => {
     it('fetch to dir', async() => {
       const { name, removeCallback } = tmp.dirSync({ unsafeCleanup: true });
       try {

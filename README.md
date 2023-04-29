@@ -1,17 +1,17 @@
-# Arch
+# archet
 
 Archetype task runner
 
 ## Install
 
 ```sh
-npm i -g arch
+npm i -g archet
 ```
 
 ## Initialize new project with archetype
 
 ```sh
-arch init foo reekoheek/node-ts-arch
+archet init foo reekoheek/node-ts-arch
 ```
 
 Happy coding...

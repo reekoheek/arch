@@ -1,10 +1,10 @@
 {
-  "name": "arch",
+  "name": "archet",
   "version": "1.0.0",
   "description": "Archetype task runner",
   "main": "dist/index.js",
   "bin": {
-    "arch": "./dist/index.js"
+    "archet": "./dist/index.js"
   },
   "files": [
     "dist"
@@ -14,7 +14,7 @@
     "dev": "nodemon -x \"esr --cache\" -w src -e ts ./src/index.ts",
     "dev:one": "esr --cache ./src/index.ts",
     "lint": "eslint .",
-    "build": "tsc",
+    "build": "rm -rf dist; tsc",
     "build:check": "tsc --noEmit",
     "test": "mocha --extension ts -r esr-register.js ./src/**/*.test.ts",
     "test:watch": "npm test -- -w",
