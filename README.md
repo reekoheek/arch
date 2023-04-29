@@ -1,20 +1,17 @@
-# Node.js Typescript Archetype
+# Arch
 
-Don't forget to edit package.json and change `name`, `author`, `license`, etc.
+Archetype task runner
 
-## Development
+## Install
 
 ```sh
-npm i
-npm run dev
+npm i -g arch
 ```
 
-## Build and run in production
+## Initialize new project with archetype
 
 ```sh
-npm i
-npm run build
-npm start
+arch init foo reekoheek/node-ts-arch
 ```
 
 Happy coding...
