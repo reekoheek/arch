@@ -1,6 +1,6 @@
 {
   "name": "archet",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Archetype task runner",
   "main": "dist/index.js",
   "bin": {
