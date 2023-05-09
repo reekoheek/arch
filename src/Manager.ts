@@ -4,14 +4,15 @@ import { Github } from './adapters/Github';
 import path from 'path';
 import os from 'os';
 import fs from 'fs-extra';
-import { ArchetError } from '../../ArchetError';
+import { ArchetError } from './ArchetError';
+import { ConsoleLogger, Logger } from './Logger';
 
 export class Manager {
   private adapters: Adapter[] = [
     Github,
   ];
 
-  constructor(readonly userDir = path.join(os.homedir(), '.arch')) {}
+  constructor(readonly userDir = path.join(os.homedir(), '.archet'), readonly logger: Logger = new ConsoleLogger()) {}
 
   addAdapter(adapter: Adapter) {
     this.adapters.push(adapter);
@@ -40,9 +41,9 @@ export class Manager {
     const cacheDir = path.join(this.userDir, 'cache', arch.kind, arch.uniqueId());
     const cacheExists = fs.existsSync(cacheDir);
     if (cacheExists) {
-      console.info('[manager] cache exists, copy from cache');
+      this.logger.log('info', 'manager', 'cache exists, copy from cache');
     } else {
-      console.info('[manager] cache not exists, download from', arch.kind + ':' + arch.uniqueId());
+      this.logger.log('error', 'manager', `cache not exists, download from ${arch.kind}:${arch.uniqueId()}`);
       await arch.fetchTo(cacheDir);
     }
     fs.copySync(cacheDir, dest);

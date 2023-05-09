@@ -6,7 +6,7 @@ import { Readable } from 'stream';
 import { pipeline } from 'stream/promises';
 import { ReadableStream } from 'stream/web';
 import decompress from 'decompress';
-import { ArchetError } from '../../../ArchetError';
+import { ArchetError } from '../ArchetError';
 
 const BASE_URL = 'https://github.com';
 const RE_MATCH_URL = /^https:\/\/github.com\/[^\\/]+\/[^\\/]+$/;

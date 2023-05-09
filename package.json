@@ -1,6 +1,6 @@
 {
   "name": "archet",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "Archetype task runner",
   "main": "dist/index.js",
   "bin": {
@@ -10,17 +10,64 @@
     "dist"
   ],
   "scripts": {
-    "start": "node ./dist",
-    "dev": "esr --cache ./src/index.ts",
-    "dev:watch": "nodemon -x \"esr --cache\" -w src -e ts ./src/index.ts",
-    "lint": "eslint .",
-    "build": "rm -rf dist; tsc",
+    "dev": "nodemon -x 'esr --cache' -w src -e ts ./src/index.ts",
+    "start": "wireit",
+    "lint": "wireit",
+    "build": "wireit",
     "build:check": "tsc --noEmit",
-    "check": "npm run lint && npm run build:check",
-    "test": "mocha --extension ts -r esr-register.js ./src/**/*.test.ts",
-    "test:watch": "npm test -- -w",
-    "test:cover": "nyc --reporter=html npm test",
-    "test:watch-cover": "nodemon -e ts -x 'npm run test:cover'"
+    "test": "wireit",
+    "test:watch": "wireit"
+  },
+  "wireit": {
+    "start": {
+      "command": "node ./dist",
+      "dependencies": [
+        "lint",
+        "test",
+        "build"
+      ]
+    },
+    "lint": {
+      "command": "eslint ./src",
+      "files": [
+        "./eslintrc.js",
+        "./eslintignore",
+        "./src/**/*.ts"
+      ],
+      "output": []
+    },
+    "build": {
+      "command": "tsc --pretty",
+      "dependencies": [
+        "lint",
+        "test"
+      ],
+      "files": [
+        "./src/**/*.ts",
+        "./tsconfig.json"
+      ],
+      "output": [
+        "./dist/**"
+      ],
+      "clean": "if-file-deleted"
+    },
+    "test": {
+      "command": "nyc --reporter=html mocha --extension ts -r esr-register.js './src/**/*.test.ts'",
+      "files": [
+        "./src/**/*.ts",
+        "./esr-register.js",
+        "./tsconfig.json"
+      ],
+      "output": [
+        "./nyc_output/**",
+        "./coverage/**"
+      ],
+      "clean": "if-file-deleted"
+    },
+    "test:watch": {
+      "command": "nodemon -e ts -x pnpm test",
+      "service": true
+    }
   },
   "author": "Ganesha <reekoheek@gmail.com>",
   "license": "MIT",
@@ -36,9 +83,11 @@
     "mocha": "^10.2.0",
     "nodemon": "^2.0.22",
     "nyc": "^15.1.0",
-    "typescript": "^5.0.4"
+    "typescript": "^5.0.4",
+    "wireit": "^0.9.5"
   },
   "dependencies": {
+    "@changesets/cli": "^2.26.1",
     "decompress": "^4.2.1",
     "fs-extra": "^11.1.1",
     "tmp": "^0.2.1"

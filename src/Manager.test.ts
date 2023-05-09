@@ -5,6 +5,7 @@ import os from 'os';
 import path from 'path';
 import fs from 'fs-extra';
 import { Adapter } from './Adapter';
+import { Logger } from './Logger';
 
 describe('Manager', () => {
   describe('constructor', () => {
@@ -63,7 +64,7 @@ describe('Manager', () => {
       const userDir = tmp.dirSync({ unsafeCleanup: true });
       const workDir = tmp.dirSync({ unsafeCleanup: true });
       try {
-        const manager = new Manager(userDir.name);
+        const manager = new Manager(userDir.name, new MockLogger());
         await manager.fetch('reekoheek/empty-arch', workDir.name);
         const files = fs.readdirSync(workDir.name);
         assert.strictEqual(files.includes('.editorconfig'), true);
@@ -82,7 +83,7 @@ describe('Manager', () => {
       fs.writeFileSync(path.join(cacheDir, '.editorconfig'), 'root = true\n');
 
       try {
-        const manager = new Manager(userDir.name);
+        const manager = new Manager(userDir.name, new MockLogger());
         await manager.fetch('reekoheek/empty-arch', workDir.name);
         const files = fs.readdirSync(workDir.name);
         assert.strictEqual(files.includes('.editorconfig'), true);
@@ -93,3 +94,10 @@ describe('Manager', () => {
     }).timeout(10000);
   });
 });
+
+class MockLogger implements Logger {
+  logs: [string, string, string][] = [];
+  log(severity: 'info' | 'error', category: string, message: string): void {
+    this.logs.push([severity, category, message]);
+  }
+}

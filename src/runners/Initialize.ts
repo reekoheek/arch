@@ -1,6 +1,6 @@
 import fs from 'fs-extra';
-import { Git } from '../lib/git';
-import { Manager } from '../lib/archetype';
+import { Git } from '../Git';
+import { Manager } from '../Manager';
 import { ArchetError } from '../ArchetError';
 import path from 'path';
 
@@ -26,9 +26,10 @@ export class Initialize {
 
   showReadme() {
     const content = fs.readFileSync(path.join(this.dest, 'README.md'));
-    console.info('');
-    console.info('README');
-    console.info(content.toString());
+    this.manager.logger.log('info', 'readme');
+    content.toString().split('\n').forEach((line) => {
+      this.manager.logger.log('info', 'readme', line.trim());
+    });
   }
 
   async run(src = EMPTY_SRC) {
@@ -36,7 +37,11 @@ export class Initialize {
 
     await this.manager.fetch(src, this.dest);
 
-    await new Git(this.dest).init();
+    const git = new Git(this.dest, this.manager.logger);
+    const initialized = await git.initialized();
+    if (!initialized) {
+      await git.init();
+    }
 
     this.showReadme();
   }

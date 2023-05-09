@@ -1,4 +1,4 @@
-import { Manager } from '../lib/archetype';
+import { Manager } from '../Manager';
 
 export class ClearCache {
   constructor(private manager: Manager) {}

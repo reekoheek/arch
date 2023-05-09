@@ -19,15 +19,15 @@ describe('Github', () => {
 
   describe('#fetchTo()', () => {
     it('fetch to dir', async() => {
-      const { name, removeCallback } = tmp.dirSync({ unsafeCleanup: true });
+      const dir = tmp.dirSync({ unsafeCleanup: true });
       try {
         const arch = new Github('https://github.com/reekoheek/empty-arch');
-        await arch.fetchTo(name);
-        const files = fs.readdirSync(name);
+        await arch.fetchTo(dir.name);
+        const files = fs.readdirSync(dir.name);
 
         assert.strictEqual(files.includes('.editorconfig'), true);
       } finally {
-        removeCallback();
+        dir.removeCallback();
       }
     }).timeout(10000);
   });
