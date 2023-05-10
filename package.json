@@ -1,10 +1,10 @@
 {
   "name": "archet",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "Archetype task runner",
   "main": "dist/index.js",
   "bin": {
-    "archet": "./dist/index.js"
+    "archet": "./dist/cli.js"
   },
   "files": [
     "dist"
@@ -16,7 +16,8 @@
     "build": "wireit",
     "build:check": "tsc --noEmit",
     "test": "wireit",
-    "test:watch": "wireit"
+    "test:watch": "wireit",
+    "release": "pnpm build && pnpm changeset publish"
   },
   "wireit": {
     "start": {
@@ -68,6 +69,9 @@
       "command": "nodemon -e ts -x pnpm test",
       "service": true
     }
+  },
+  "publishConfig": {
+    "access": "public"
   },
   "author": "Ganesha <reekoheek@gmail.com>",
   "license": "MIT",
