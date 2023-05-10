@@ -30,7 +30,7 @@ const manager = new Manager();
   const argv = optimist.parse(process.argv.slice(2));
   switch (argv._[0]) {
   case 'init': {
-    if (!argv[1]) {
+    if (!argv._[1]) {
       throw new ArchetError('destination directory is mandatory');
     }
     await new Initialize(manager, path.resolve(argv._[1])).run(argv._[2]);
@@ -40,19 +40,19 @@ const manager = new Manager();
     await new ListArchetypes(manager).run();
     break;
   case 'add':
-    if (!argv[1]) {
+    if (!argv._[1]) {
       throw new ArchetError('src is mandatory');
     }
     await new AddCache(manager).run(argv._[1]);
     break;
   case 'up':
-    if (!argv[1]) {
+    if (!argv._[1]) {
       throw new ArchetError('src is mandatory');
     }
     await new UpdateCache(manager).run(argv._[1]);
     break;
   case 'rm':
-    if (!argv[1]) {
+    if (!argv._[1]) {
       throw new ArchetError('src is mandatory');
     }
     await new RemoveCache(manager).run(argv._[1]);
