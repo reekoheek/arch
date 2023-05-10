@@ -10,10 +10,10 @@ describe('Github', () => {
     });
   });
 
-  describe('#uniqueId()', () => {
+  describe('#id', () => {
     it('return unique id', () => {
-      assert.strictEqual(new Github('foo/bar').uniqueId(), 'foo/bar');
-      assert.strictEqual(new Github('https://github.com/reekoheek/empty-arch').uniqueId(), 'reekoheek/empty-arch');
+      assert.strictEqual(new Github('foo/bar').id, 'foo/bar');
+      assert.strictEqual(new Github('https://github.com/reekoheek/empty-arch').id, 'reekoheek/empty-arch');
     });
   });
 

@@ -5,12 +5,18 @@ import { Initialize } from './runners/Initialize';
 import { Manager } from './';
 import { ClearCache } from './runners/ClearCache';
 import { ArchetError } from './ArchetError';
+import { Help } from './runners/Help';
+import optimist from 'optimist';
+import { ListArchetypes } from './runners/ListArchetypes';
+import { AddCache } from './runners/AddCache';
+import { RemoveCache } from './runners/RemoveCache';
+import { UpdateCache } from './runners/UpdateCache';
 
-process.on('uncaughtException', (err) => {
+process.on('uncaughtException', async(err) => {
   if (err instanceof ArchetError) {
     console.error('[archet]', err.message);
     console.info('');
-    printHelp();
+    await new Help(manager).run();
     process.exit(1);
   }
 
@@ -20,40 +26,42 @@ process.on('uncaughtException', (err) => {
 
 const manager = new Manager();
 
-function printHelp() {
-  console.info(`
-Usage: archet [options] [command]
-
-Archetype task runner
-
-Options:
-  -V, --version      output the version number
-  -h, --help         display help for command
-
-Commands:
-  init <dest> [src]  Initialize project
-  clear-cache        Initialize project
-  help [command]     display help for command
-    `.trim());
-}
-
 (async() => {
-  const argv = process.argv.slice(2);
-  switch (argv[0]) {
+  const argv = optimist.parse(process.argv.slice(2));
+  switch (argv._[0]) {
   case 'init': {
     if (!argv[1]) {
       throw new ArchetError('destination directory is mandatory');
     }
-
-    const [dest, src] = argv.slice(1);
-    await new Initialize(manager, path.resolve(dest)).run(src);
-
+    await new Initialize(manager, path.resolve(argv._[1])).run(argv._[2]);
     break;
   }
-  case 'clear-cache':
+  case 'ls':
+    await new ListArchetypes(manager).run();
+    break;
+  case 'add':
+    if (!argv[1]) {
+      throw new ArchetError('src is mandatory');
+    }
+    await new AddCache(manager).run(argv._[1]);
+    break;
+  case 'up':
+    if (!argv[1]) {
+      throw new ArchetError('src is mandatory');
+    }
+    await new UpdateCache(manager).run(argv._[1]);
+    break;
+  case 'rm':
+    if (!argv[1]) {
+      throw new ArchetError('src is mandatory');
+    }
+    await new RemoveCache(manager).run(argv._[1]);
+    break;
+  case 'clear':
     await new ClearCache(manager).run();
     break;
   default:
-    printHelp();
+    await new Help(manager).run();
+    break;
   }
 })();

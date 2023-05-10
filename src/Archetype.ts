@@ -1,6 +1,13 @@
-export interface Archetype {
-  kind: string;
+export interface ArchetypeInfo {
+  readonly kind: string;
+  readonly id: string;
+  readonly src: string;
+  readonly fetchedAt: Date;
+}
 
-  uniqueId(): string;
+export interface Archetype {
+  readonly kind: string;
+  readonly id: string;
+  readonly src: string;
   fetchTo(dest: string): Promise<void>;
 }

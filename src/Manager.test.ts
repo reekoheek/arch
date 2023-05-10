@@ -65,9 +65,11 @@ describe('Manager', () => {
       const workDir = tmp.dirSync({ unsafeCleanup: true });
       try {
         const manager = new Manager(userDir.name, new MockLogger());
+        manager.clearAdapters();
+        manager.addAdapter(MockAdapter);
         await manager.fetch('reekoheek/empty-arch', workDir.name);
         const files = fs.readdirSync(workDir.name);
-        assert.strictEqual(files.includes('.editorconfig'), true);
+        assert.strictEqual(files.includes('mocked'), true);
       } finally {
         userDir.removeCallback();
         workDir.removeCallback();
@@ -99,5 +101,21 @@ class MockLogger implements Logger {
   logs: [string, string, string][] = [];
   log(severity: 'info' | 'error', category: string, message: string): void {
     this.logs.push([severity, category, message]);
+  }
+}
+
+class MockAdapter {
+  static support() {
+    return true;
+  }
+
+  readonly kind = 'mock';
+  readonly id = 'mock-x';
+  readonly src = 'mock:x';
+
+  fetchTo(cacheDir: string): Promise<void> {
+    fs.ensureDirSync(cacheDir);
+    fs.writeFileSync(path.join(cacheDir, 'mocked'), 'mocked');
+    return Promise.resolve();
   }
 }

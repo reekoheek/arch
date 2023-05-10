@@ -14,7 +14,11 @@ const RE_SUPPORTED_TOKEN = /^[^\\/]+\/[^\\/]+$/;
 
 export class Github implements Archetype {
   readonly kind = Github.name.toLowerCase();
-  private src: string;
+  readonly src: string;
+
+  get id() {
+    return this.src.slice(BASE_URL.length + 1);
+  }
 
   static support(src: string) {
     src = src.trim();
@@ -32,10 +36,6 @@ export class Github implements Archetype {
 
   constructor(src: string) {
     this.src = normalize(src);
-  }
-
-  uniqueId() {
-    return this.src.slice(BASE_URL.length + 1);
   }
 
   async fetchTo(dest: string): Promise<void> {

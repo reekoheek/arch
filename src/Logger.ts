@@ -7,6 +7,6 @@ export interface Logger {
 export class ConsoleLogger implements Logger {
   log(severity: Severity, category: string, message?: string): void {
     // eslint-disable-next-line no-console
-    console[severity](`[${category}]`, message);
+    console[severity](`[${category}]`, message ?? '');
   }
 }
