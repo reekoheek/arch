@@ -1,5 +1,11 @@
 # archet
 
+## 1.1.1
+
+### Patch Changes
+
+- fix bugs
+
 ## 1.1.0
 
 ### Minor Changes
