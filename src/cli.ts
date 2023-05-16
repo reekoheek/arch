@@ -2,7 +2,7 @@
 
 import path from 'path';
 import { Initialize } from './runners/Initialize';
-import { Manager } from './';
+import { Manager } from './index';
 import { ClearCache } from './runners/ClearCache';
 import { ArchetError } from './ArchetError';
 import { Help } from './runners/Help';

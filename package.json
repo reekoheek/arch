@@ -10,11 +10,12 @@
     "dist"
   ],
   "scripts": {
-    "dev": "nodemon -w src -e ts -x 'esr --cache ./src/cli.ts'",
+    "dev": "node -r esbuild-register ./src/cli.ts",
     "start": "wireit",
     "lint": "wireit",
+    "lint:eslint": "eslint ./src",
+    "lint:ts": "tsc --noEmit",
     "build": "wireit",
-    "build:check": "tsc --noEmit",
     "test": "wireit",
     "test:watch": "wireit",
     "changeset": "changeset",
@@ -30,16 +31,13 @@
       ]
     },
     "lint": {
-      "command": "eslint ./src",
-      "files": [
-        "./eslintrc.js",
-        "./eslintignore",
-        "./src/**/*.ts"
-      ],
-      "output": []
+      "dependencies": [
+        "lint:eslint",
+        "lint:ts"
+      ]
     },
     "build": {
-      "command": "tsc --pretty",
+      "command": "tsc",
       "dependencies": [
         "lint",
         "test"
@@ -54,20 +52,15 @@
       "clean": "if-file-deleted"
     },
     "test": {
-      "command": "nyc --reporter=html mocha --extension ts -r esr-register.js './src/**/*.test.ts'",
+      "command": "nyc --reporter=html mocha --extension ts -r esbuild-register './src/**/*.test.ts'",
       "files": [
         "./src/**/*.ts",
-        "./esr-register.js",
         "./tsconfig.json"
-      ],
-      "output": [
-        "./nyc_output/**",
-        "./coverage/**"
       ],
       "clean": "if-file-deleted"
     },
     "test:watch": {
-      "command": "nodemon -e ts -x pnpm test",
+      "command": "pnpm run test --watch",
       "service": true
     }
   },
@@ -77,6 +70,7 @@
   "author": "Ganesha <reekoheek@gmail.com>",
   "license": "MIT",
   "devDependencies": {
+    "@changesets/cli": "^2.26.1",
     "@types/decompress": "^4.2.4",
     "@types/fs-extra": "^11.0.1",
     "@types/minimist": "^1.2.2",
@@ -84,16 +78,14 @@
     "@types/node": "^18.16.2",
     "@types/optimist": "^0.0.30",
     "@types/tmp": "^0.2.3",
-    "esbuild-runner": "^2.2.2",
+    "esbuild-register": "^3.4.2",
     "eslint-config-xinix": "^2.0.1",
     "mocha": "^10.2.0",
-    "nodemon": "^2.0.22",
     "nyc": "^15.1.0",
     "typescript": "^5.0.4",
     "wireit": "^0.9.5"
   },
   "dependencies": {
-    "@changesets/cli": "^2.26.1",
     "decompress": "^4.2.1",
     "fs-extra": "^11.1.1",
     "optimist": "^0.6.1",
